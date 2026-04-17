@@ -1,12 +1,11 @@
-import { mkdirSync, writeFileSync } from 'fs';
-import { join } from 'path';
-import { homedir } from 'os';
+import system from '../services/system';
 
 const init = () => {
-  const dir = join(homedir(), 'llmon');
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, 'AGENTS.md'), '');
-  writeFileSync(join(dir, 'SKILLS.md'), '');
+  const dir = system.pathJoin(system.osHomedir(), 'llmon');
+  system.fsMkdirSync(dir, { recursive: true });
+  system.fsWriteFileSync(system.pathJoin(dir, 'AGENTS.md'), '');
+  system.fsWriteFileSync(system.pathJoin(dir, 'SKILLS.md'), '');
+  system.log('You have successfully initialized llmon!');
 };
 
 export default init;

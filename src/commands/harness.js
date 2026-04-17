@@ -1,24 +1,23 @@
-import { symlinkSync, writeFileSync, appendFileSync } from 'fs';
-import { resolve, join } from 'path';
-import { homedir } from 'os';
+import system from '../services/system';
 
-const CURSORRULES_CONTENT = `Follow all instructions in:
+const harness = directory => {
+  const targetDir = system.pathResolve(directory);
+  const llmonHome = system.pathJoin(system.osHomedir(), 'llmon');
+  const excludePath = system.pathJoin(targetDir, '.git', 'info', 'exclude');
+  system.fsSymlinkSync(llmonHome, system.pathJoin(targetDir, '.llmon'));
+  system.fsWriteFileSync(system.pathJoin(targetDir, '.cursorrules'), getCursorRulesContent());
+  system.fsAppendFileSync(excludePath, '\n.llmon\n.cursorrules\n');
+  system.log(`You have successfully harnessed the directory ${targetDir}`);
+};
+
+function getCursorRulesContent(){
+  return `Follow all instructions in:
 
 ./.llmon/AGENTS.md
 ./.llmon/SKILLS.md
 
 These define behavior, coding standards, and capabilities.
 `;
-
-const harness = (dir) => {
-  const targetDir = resolve(dir);
-  const llmonHome = join(homedir(), 'llmon');
-
-  symlinkSync(llmonHome, join(targetDir, '.llmon'));
-  writeFileSync(join(targetDir, '.cursorrules'), CURSORRULES_CONTENT);
-
-  const excludePath = join(targetDir, '.git', 'info', 'exclude');
-  appendFileSync(excludePath, '\n.llmon\n');
-};
+}
 
 export default harness;
