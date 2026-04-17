@@ -15,19 +15,28 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "format": "eslint src",
+    "release": "semantic-release",
     "test": "jest"
   },
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@babel/cli": "^7.28.6",
     "@babel/core": "^7.29.0",
     "@babel/eslint-parser": "^7.28.6",
     "@babel/preset-env": "^7.29.2",
     "@eslint/js": "^9.39.4",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/github": "^12.0.6",
+    "@semantic-release/npm": "^13.1.5",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "eslint": "^9.39.4",
     "globals": "^17.5.0",
-    "jest": "^30.3.0"
+    "jest": "^30.3.0",
+    "semantic-release": "^25.0.3"
   }
 }
