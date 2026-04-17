@@ -2,7 +2,7 @@ import init from './commands/init';
 import harness from './commands/harness';
 import system from './services/system';
 
-const app = {}
+const app = {};
 
 app.start = () => {
   const [command, ...args] = system.getProcessArgs().slice(2);
