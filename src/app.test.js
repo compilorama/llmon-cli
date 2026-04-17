@@ -3,9 +3,11 @@ import {
   fsWriteFileSyncMock,
   fsSymlinkSyncMock,
   fsAppendFileSyncMock,
+  fsExistsSyncMock,
   exitProcessMock,
   logMock,
   simulateHomedir,
+  simulateDirectoryExistence,
   simulateCommand
 } from './services/testing';
 
@@ -15,6 +17,7 @@ describe('App', () => {
     fsWriteFileSyncMock.mockClear();
     fsSymlinkSyncMock.mockClear();
     fsAppendFileSyncMock.mockClear();
+    fsExistsSyncMock.mockReset();
     exitProcessMock.mockClear();
     logMock.mockClear();
   });
@@ -26,6 +29,16 @@ describe('App', () => {
     expect(fsWriteFileSyncMock).toHaveBeenCalledWith('fake/home/llmon/AGENTS.md', '');
     expect(fsWriteFileSyncMock).toHaveBeenCalledWith('fake/home/llmon/SKILLS.md', '');
     expect(logMock).toHaveBeenCalledWith('You have successfully initialized llmon!');
+  });
+
+  it('should not recreate the llmon home directory nor rewrite AGENTS.md/SKILLS.md when it already exists', () => {
+    simulateHomedir('fake/home');
+    simulateDirectoryExistence('fake/home/llmon');
+    simulateCommand('llmon init');
+    expect(fsExistsSyncMock).toHaveBeenCalledWith('fake/home/llmon');
+    expect(fsMkdirSyncMock).not.toHaveBeenCalled();
+    expect(fsWriteFileSyncMock).not.toHaveBeenCalled();
+    expect(logMock).toHaveBeenCalledWith('llmon had been initialized already');
   });
 
   it('should symlink the llmon home, write .cursorrules, and gitignore both entries in the target directory when running the harness command', () => {

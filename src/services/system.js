@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync, symlinkSync, appendFileSync } from 'fs';
+import { mkdirSync, writeFileSync, symlinkSync, appendFileSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
 import { homedir } from 'os';
 
@@ -8,6 +8,7 @@ service.fsMkdirSync = mkdirSync;
 service.fsWriteFileSync = writeFileSync;
 service.fsSymlinkSync = symlinkSync;
 service.fsAppendFileSync = appendFileSync;
+service.fsExistsSync = existsSync;
 service.pathJoin = join;
 service.pathResolve = resolve;
 service.osHomedir = homedir;

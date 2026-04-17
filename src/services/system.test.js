@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync, symlinkSync, appendFileSync } from 'fs';
+import { mkdirSync, writeFileSync, symlinkSync, appendFileSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
 import { homedir } from 'os';
 import service from './system';
@@ -18,6 +18,10 @@ describe('System Service', () => {
 
   it('should expose fs.appendFileSync as fsAppendFileSync', () => {
     expect(service.fsAppendFileSync).toBe(appendFileSync);
+  });
+
+  it('should expose fs.existsSync as fsExistsSync', () => {
+    expect(service.fsExistsSync).toBe(existsSync);
   });
 
   it('should expose path.join as pathJoin', () => {
