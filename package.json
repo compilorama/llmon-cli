@@ -1,0 +1,27 @@
+{
+  "name": "@compilorama/llmon-cli",
+  "version": "0.0.0",
+  "description": "LLM context files manager",
+  "main": "dist/index.js",
+  "bin": {
+    "llmon": "dist/index.js"
+  },
+  "license": "MIT",
+  "author": "Rafael Camargo <hello@rafaelcamargo.com>",
+  "engines": {
+    "node": ">=22",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "build": "babel src --out-dir dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.28.6",
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "jest": "^30.3.0"
+  }
+}
