@@ -1,0 +1,101 @@
+version: 2.1
+
+defaults: &defaults
+  docker:
+    - image: cimg/node:22.18.0-browsers
+  working_directory: ~/app
+
+jobs:
+  install:
+    <<: *defaults
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+            - v1-dependencies-
+      - run:
+          name: Install
+          command: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+      - persist_to_workspace:
+          root: "."
+          paths:
+            - "package.json"
+            - "package-lock.json"
+            - "babel.config.json"
+            - "eslint.config.mjs"
+            - "jest.config.cjs"
+            - "node_modules"
+            - ".git/*"
+            - ".circleci/*"
+            - "src/*"
+
+  format:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Format
+          command: npm run format
+
+  build:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Build
+          command: npm run build
+
+  test:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Test
+          command: npm run test -- --coverage --coverageReporters=text-summary
+
+  release:
+    <<: *defaults
+
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Release
+          command: npm run release
+
+workflows:
+  version: 2
+
+  branch-workflow:
+    jobs:
+      - install
+      - format:
+          requires:
+            - install
+      - build:
+          requires:
+            - install
+      - test:
+          requires:
+            - install
+      - release:
+          requires:
+            - format
+            - build
+            - test
+          filters:
+            branches:
+              only: main
