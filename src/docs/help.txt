@@ -1,0 +1,17 @@
+llmon - LLM context files manager
+
+Usage:
+  llmon <command> [options]
+
+Commands:
+  init                  Create the llmon home directory at ~/llmon, seeded with
+                        empty AGENTS.md and SKILLS.md files. Re-running this
+                        command is safe; it will not overwrite existing files.
+
+  harness <directory>   Wire a project directory up to llmon by symlinking
+                        ~/llmon into <directory>/.llmon, writing a .cursorrules
+                        file that points at AGENTS.md and SKILLS.md, and adding
+                        both entries to <directory>/.git/info/exclude. Re-running
+                        against an already harnessed directory is a no-op.
+
+  --help                Show this help message.

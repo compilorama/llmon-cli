@@ -73,6 +73,30 @@ These define behavior, coding standards, and capabilities.
     expect(exitProcessMock).not.toHaveBeenCalled();
   });
 
+  it('should print the content of src/docs/help.txt when running llmon --help', () => {
+    simulateCommand('llmon --help');
+    expect(logMock).toHaveBeenCalledWith(
+      `llmon - LLM context files manager
+
+Usage:
+  llmon <command> [options]
+
+Commands:
+  init                  Create the llmon home directory at ~/llmon, seeded with
+                        empty AGENTS.md and SKILLS.md files. Re-running this
+                        command is safe; it will not overwrite existing files.
+
+  harness <directory>   Wire a project directory up to llmon by symlinking
+                        ~/llmon into <directory>/.llmon, writing a .cursorrules
+                        file that points at AGENTS.md and SKILLS.md, and adding
+                        both entries to <directory>/.git/info/exclude. Re-running
+                        against an already harnessed directory is a no-op.
+
+  --help                Show this help message.
+`);
+    expect(exitProcessMock).not.toHaveBeenCalled();
+  });
+
   it('should log an unknown command message and exit with code 1 when given command does not exist', () => {
     simulateCommand('llmon foo');
     expect(logMock).toHaveBeenCalledWith('Unknown command: foo');

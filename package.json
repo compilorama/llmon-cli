@@ -13,7 +13,7 @@
     "npm": ">=10"
   },
   "scripts": {
-    "build": "babel src --out-dir dist",
+    "build": "babel src --out-dir dist --copy-files",
     "format": "eslint src",
     "release": "semantic-release",
     "test": "jest"
