@@ -6,6 +6,7 @@ const app = {};
 
 app.start = () => {
   const [command, ...args] = system.getProcessArgs().slice(2);
+  if (!command) return handleMissingCommand();
   const exec = getCommandExecutorByName(command);
   return exec ? exec(...args) : handleCommandNotFound(command);
 };
@@ -15,6 +16,10 @@ function getCommandExecutorByName(name){
     'init': init,
     'harness': harness
   }[name];
+}
+
+function handleMissingCommand(){
+  system.log('No command given. Run "llmon --help" to learn about available commands.');
 }
 
 function handleCommandNotFound(command){

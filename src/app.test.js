@@ -67,6 +67,12 @@ These define behavior, coding standards, and capabilities.
     expect(logMock).toHaveBeenCalledWith('The directory /fake/target had been harnessed already');
   });
 
+  it('should log a helpful hint and not exit when no command is given', () => {
+    simulateCommand('llmon');
+    expect(logMock).toHaveBeenCalledWith('No command given. Run "llmon --help" to learn about available commands.');
+    expect(exitProcessMock).not.toHaveBeenCalled();
+  });
+
   it('should log an unknown command message and exit with code 1 when given command does not exist', () => {
     simulateCommand('llmon foo');
     expect(logMock).toHaveBeenCalledWith('Unknown command: foo');
