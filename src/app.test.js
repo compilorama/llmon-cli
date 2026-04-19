@@ -56,6 +56,17 @@ These define behavior, coding standards, and capabilities.
     expect(logMock).toHaveBeenCalledWith('You have successfully harnessed the directory /fake/target');
   });
 
+  it('should not re-harness the target directory when it already contains a .llmon entry', () => {
+    simulateHomedir('fake/home');
+    simulateDirectoryExistence('/fake/target/.llmon');
+    simulateCommand('llmon harness /fake/target');
+    expect(fsExistsSyncMock).toHaveBeenCalledWith('/fake/target/.llmon');
+    expect(fsSymlinkSyncMock).not.toHaveBeenCalled();
+    expect(fsWriteFileSyncMock).not.toHaveBeenCalled();
+    expect(fsAppendFileSyncMock).not.toHaveBeenCalled();
+    expect(logMock).toHaveBeenCalledWith('The directory /fake/target had been harnessed already');
+  });
+
   it('should log an unknown command message and exit with code 1 when given command does not exist', () => {
     simulateCommand('llmon foo');
     expect(logMock).toHaveBeenCalledWith('Unknown command: foo');
