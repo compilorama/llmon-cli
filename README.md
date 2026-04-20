@@ -40,7 +40,7 @@ Using `llmon` is a three-step workflow:
 
 ## API
 
-`llmon` exposes two commands.
+`llmon` exposes the following commands.
 
 ### `init`
 
@@ -74,6 +74,24 @@ After harnessing, the project contains:
 ├── .llmon -> ~/llmon
 └── .cursorrules
 ```
+
+### `--help`
+
+```bash
+llmon --help
+llmon -h
+```
+
+Prints a brief usage message listing all available commands. `-h` is a short alias for `--help`.
+
+### `--version`
+
+```bash
+llmon --version
+llmon -v
+```
+
+Prints the installed `llmon-cli` version (as published to npm). `-v` is a short alias for `--version`.
 
 ## How to contribute
 
