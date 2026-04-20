@@ -15,3 +15,5 @@ Commands:
                         against an already harnessed directory is a no-op.
 
   --help                Show this help message.
+
+  --version             Print the installed llmon version.

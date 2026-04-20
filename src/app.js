@@ -1,6 +1,7 @@
 import init from './commands/init';
 import harness from './commands/harness';
 import help from './commands/help';
+import version from './commands/version';
 import system from './services/system';
 
 const app = {};
@@ -16,7 +17,8 @@ function getCommandExecutorByName(name){
   return {
     'init': init,
     'harness': harness,
-    '--help': help
+    '--help': help,
+    '--version': version
   }[name];
 }
 

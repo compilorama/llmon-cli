@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import {
   fsMkdirSyncMock,
   fsWriteFileSyncMock,
@@ -93,7 +95,16 @@ Commands:
                         against an already harnessed directory is a no-op.
 
   --help                Show this help message.
+
+  --version             Print the installed llmon version.
 `);
+    expect(exitProcessMock).not.toHaveBeenCalled();
+  });
+
+  it('should print the llmon-cli version from package.json when running llmon --version', () => {
+    const { version } = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'));
+    simulateCommand('llmon --version');
+    expect(logMock).toHaveBeenCalledWith(version);
     expect(exitProcessMock).not.toHaveBeenCalled();
   });
 
