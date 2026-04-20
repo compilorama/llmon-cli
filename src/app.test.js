@@ -77,8 +77,39 @@ These define behavior, coding standards, and capabilities.
 
   it('should print the content of src/docs/help.txt when running llmon --help', () => {
     simulateCommand('llmon --help');
-    expect(logMock).toHaveBeenCalledWith(
-      `llmon - LLM context files manager
+    expect(logMock).toHaveBeenCalledWith(getHelpContent());
+    expect(exitProcessMock).not.toHaveBeenCalled();
+  });
+
+  it('should print the same help content when running llmon -h', () => {
+    simulateCommand('llmon -h');
+    expect(logMock).toHaveBeenCalledWith(getHelpContent());
+    expect(exitProcessMock).not.toHaveBeenCalled();
+  });
+
+  it('should print the llmon-cli version from package.json when running llmon --version', () => {
+    const { version } = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'));
+    simulateCommand('llmon --version');
+    expect(logMock).toHaveBeenCalledWith(version);
+    expect(exitProcessMock).not.toHaveBeenCalled();
+  });
+
+  it('should print the llmon-cli version when running llmon -v', () => {
+    const { version } = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'));
+    simulateCommand('llmon -v');
+    expect(logMock).toHaveBeenCalledWith(version);
+    expect(exitProcessMock).not.toHaveBeenCalled();
+  });
+
+  it('should log an unknown command message and exit with code 1 when given command does not exist', () => {
+    simulateCommand('llmon foo');
+    expect(logMock).toHaveBeenCalledWith('Unknown command: foo');
+    expect(exitProcessMock).toHaveBeenCalledWith(1);
+  });
+});
+
+function getHelpContent(){
+  return `llmon - LLM context files manager
 
 Usage:
   llmon <command> [options]
@@ -94,23 +125,8 @@ Commands:
                         both entries to <directory>/.git/info/exclude. Re-running
                         against an already harnessed directory is a no-op.
 
-  --help                Show this help message.
+  --help, -h            Show this help message.
 
-  --version             Print the installed llmon version.
-`);
-    expect(exitProcessMock).not.toHaveBeenCalled();
-  });
-
-  it('should print the llmon-cli version from package.json when running llmon --version', () => {
-    const { version } = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'));
-    simulateCommand('llmon --version');
-    expect(logMock).toHaveBeenCalledWith(version);
-    expect(exitProcessMock).not.toHaveBeenCalled();
-  });
-
-  it('should log an unknown command message and exit with code 1 when given command does not exist', () => {
-    simulateCommand('llmon foo');
-    expect(logMock).toHaveBeenCalledWith('Unknown command: foo');
-    expect(exitProcessMock).toHaveBeenCalledWith(1);
-  });
-});
+  --version, -v         Print the installed llmon version.
+`;
+}

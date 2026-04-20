@@ -18,7 +18,9 @@ function getCommandExecutorByName(name){
     'init': init,
     'harness': harness,
     '--help': help,
-    '--version': version
+    '-h': help,
+    '--version': version,
+    '-v': version
   }[name];
 }
 
