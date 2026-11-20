@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/compilorama/llmon-cli/compare/v1.2.1...v1.2.2) (2026-11-20)
+
+
+### Chores
+
+* include chore commits in changelog ([1478d5f](https://github.com/compilorama/llmon-cli/commit/1478d5f87f3c60819b80e4cf3342b435ea2969f3))
+
 ## [1.2.1](https://github.com/compilorama/llmon-cli/compare/v1.2.0...v1.2.1) (2026-11-20)
 
 
@@ -58,8 +65,3 @@
 ### Features
 
 * create two first commands (init and harness) ([1912cc6](https://github.com/compilorama/llmon-cli/commit/1912cc686abbab0764c9746d51082dc5c4bd7382))
-
-
-
-
-
