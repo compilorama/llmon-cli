@@ -1,6 +1,6 @@
 {
   "name": "@compilorama/llmon-cli",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "LLM context files manager",
   "main": "dist/index.js",
   "bin": {

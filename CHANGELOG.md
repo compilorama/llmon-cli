@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/compilorama/llmon-cli/compare/v1.2.0...v1.2.1) (2026-11-20)
+
+
+### Bug Fixes
+
+* skip git exclude and cursorrules when not applicable ([ce83665](https://github.com/compilorama/llmon-cli/commit/ce836653a2a34a766014414c22c670620737f0e9))
+
 # [1.2.0](https://github.com/rafaelcamargo/llmon-cli/compare/v1.1.0...v1.2.0) (2026-04-20)
 
 
@@ -34,7 +41,3 @@
 ### Features
 
 * create two first commands (init and harness) ([1912cc6](https://github.com/rafaelcamargo/llmon-cli/commit/1912cc686abbab0764c9746d51082dc5c4bd7382))
-
-
-
-
