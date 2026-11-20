@@ -10,9 +10,11 @@ Commands:
 
   harness <directory>   Wire a project directory up to llmon by symlinking
                         ~/llmon into <directory>/.llmon, writing a .cursorrules
-                        file that points at AGENTS.md and SKILLS.md, and adding
-                        both entries to <directory>/.git/info/exclude. Re-running
-                        against an already harnessed directory is a no-op.
+                        file that points at AGENTS.md and SKILLS.md (only when
+                        ~/.cursor exists), and adding those entries to
+                        <directory>/.git/info/exclude (only when <directory>/.git
+                        exists). Re-running against an already harnessed
+                        directory is a no-op.
 
   --help, -h            Show this help message.
 

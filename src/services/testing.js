@@ -36,6 +36,6 @@ export const simulateHomedir = path => {
   system.osHomedir.mockReturnValue(path);
 };
 
-export const simulateDirectoryExistence = path => {
-  system.fsExistsSync.mockImplementation(input => input === path);
+export const simulateDirectoryExistence = (...paths) => {
+  system.fsExistsSync.mockImplementation(input => paths.includes(input));
 };

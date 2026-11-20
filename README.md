@@ -64,8 +64,8 @@ llmon harness <directory>
 Wires a project up to your central `llmon` context. Given a target `<directory>` (absolute or relative), it will:
 
 1. Create a symlink `<directory>/.llmon` pointing to `~/llmon`, so the project can read the shared `AGENTS.md` and `SKILLS.md` without copying them.
-2. Write a `<directory>/.cursorrules` file that instructs Cursor to follow the rules defined in `./.llmon/AGENTS.md` and `./.llmon/SKILLS.md`.
-3. Append `.llmon` and `.cursorrules` to `<directory>/.git/info/exclude`, so these entries are ignored locally by Git without touching the project's shared `.gitignore`.
+2. Write a `<directory>/.cursorrules` file that instructs Cursor to follow the rules defined in `./.llmon/AGENTS.md` and `./.llmon/SKILLS.md`. This step is skipped when there is no `~/.cursor` directory (that is, Cursor is not installed).
+3. Append `.llmon` (and `.cursorrules`, when written) to `<directory>/.git/info/exclude`, so these entries are ignored locally by Git without touching the project's shared `.gitignore`. This step is skipped when `<directory>` has no `.git` directory.
 
 After harnessing, the project contains:
 
