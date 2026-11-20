@@ -11,12 +11,22 @@ const harness = directory => {
 };
 
 function applyHarness(targetDir, targetLlmon){
-  const llmonHome = system.pathJoin(system.osHomedir(), 'llmon');
-  const excludePath = system.pathJoin(targetDir, '.git', 'info', 'exclude');
-  system.fsSymlinkSync(llmonHome, targetLlmon);
-  system.fsWriteFileSync(system.pathJoin(targetDir, '.cursorrules'), getCursorRulesContent());
-  system.fsAppendFileSync(excludePath, '\n.llmon\n.cursorrules\n');
+  const homeDir = system.osHomedir();
+  const shouldWriteCursorRules = system.fsExistsSync(system.pathJoin(homeDir, '.cursor'));
+  system.fsSymlinkSync(system.pathJoin(homeDir, 'llmon'), targetLlmon);
+  if (shouldWriteCursorRules) writeCursorRules(targetDir);
+  if (system.fsExistsSync(system.pathJoin(targetDir, '.git'))) excludeFromGit(targetDir, shouldWriteCursorRules);
   system.log(`You have successfully harnessed the directory ${targetDir}`);
+}
+
+function writeCursorRules(targetDir){
+  system.fsWriteFileSync(system.pathJoin(targetDir, '.cursorrules'), getCursorRulesContent());
+}
+
+function excludeFromGit(targetDir, shouldExcludeCursorRules){
+  const excludePath = system.pathJoin(targetDir, '.git', 'info', 'exclude');
+  const entries = shouldExcludeCursorRules ? ['.llmon', '.cursorrules'] : ['.llmon'];
+  system.fsAppendFileSync(excludePath, `\n${entries.join('\n')}\n`);
 }
 
 function getCursorRulesContent(){

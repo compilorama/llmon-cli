@@ -45,6 +45,7 @@ describe('App', () => {
 
   it('should symlink the llmon home, write .cursorrules, and gitignore both entries in the target directory when running the harness command', () => {
     simulateHomedir('fake/home');
+    simulateDirectoryExistence('fake/home/.cursor', '/fake/target/.git');
     simulateCommand('llmon harness /fake/target');
     expect(fsSymlinkSyncMock).toHaveBeenCalledWith('fake/home/llmon', '/fake/target/.llmon');
     expect(fsWriteFileSyncMock).toHaveBeenCalledWith('/fake/target/.cursorrules', `Follow all instructions in:
@@ -55,6 +56,35 @@ describe('App', () => {
 These define behavior, coding standards, and capabilities.
 `);
     expect(fsAppendFileSyncMock).toHaveBeenCalledWith('/fake/target/.git/info/exclude', '\n.llmon\n.cursorrules\n');
+    expect(logMock).toHaveBeenCalledWith('You have successfully harnessed the directory /fake/target');
+  });
+
+  it('should not write to .git/info/exclude when the target directory has no .git directory', () => {
+    simulateHomedir('fake/home');
+    simulateDirectoryExistence('fake/home/.cursor');
+    simulateCommand('llmon harness /fake/target');
+    expect(fsSymlinkSyncMock).toHaveBeenCalledWith('fake/home/llmon', '/fake/target/.llmon');
+    expect(fsWriteFileSyncMock).toHaveBeenCalledWith('/fake/target/.cursorrules', expect.any(String));
+    expect(fsAppendFileSyncMock).not.toHaveBeenCalled();
+    expect(logMock).toHaveBeenCalledWith('You have successfully harnessed the directory /fake/target');
+  });
+
+  it('should neither write .cursorrules nor gitignore it when the user home has no .cursor directory', () => {
+    simulateHomedir('fake/home');
+    simulateDirectoryExistence('/fake/target/.git');
+    simulateCommand('llmon harness /fake/target');
+    expect(fsSymlinkSyncMock).toHaveBeenCalledWith('fake/home/llmon', '/fake/target/.llmon');
+    expect(fsWriteFileSyncMock).not.toHaveBeenCalled();
+    expect(fsAppendFileSyncMock).toHaveBeenCalledWith('/fake/target/.git/info/exclude', '\n.llmon\n');
+    expect(logMock).toHaveBeenCalledWith('You have successfully harnessed the directory /fake/target');
+  });
+
+  it('should only symlink the llmon home when the target directory has no .git and the user home has no .cursor directory', () => {
+    simulateHomedir('fake/home');
+    simulateCommand('llmon harness /fake/target');
+    expect(fsSymlinkSyncMock).toHaveBeenCalledWith('fake/home/llmon', '/fake/target/.llmon');
+    expect(fsWriteFileSyncMock).not.toHaveBeenCalled();
+    expect(fsAppendFileSyncMock).not.toHaveBeenCalled();
     expect(logMock).toHaveBeenCalledWith('You have successfully harnessed the directory /fake/target');
   });
 
@@ -121,9 +151,11 @@ Commands:
 
   harness <directory>   Wire a project directory up to llmon by symlinking
                         ~/llmon into <directory>/.llmon, writing a .cursorrules
-                        file that points at AGENTS.md and SKILLS.md, and adding
-                        both entries to <directory>/.git/info/exclude. Re-running
-                        against an already harnessed directory is a no-op.
+                        file that points at AGENTS.md and SKILLS.md (only when
+                        ~/.cursor exists), and adding those entries to
+                        <directory>/.git/info/exclude (only when <directory>/.git
+                        exists). Re-running against an already harnessed
+                        directory is a no-op.
 
   --help, -h            Show this help message.
 
